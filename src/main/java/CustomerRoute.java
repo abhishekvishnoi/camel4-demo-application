@@ -15,12 +15,13 @@ public class CustomerRoute extends RouteBuilder {
                 .component("platform-http")
                 .bindingMode(RestBindingMode.json);
 
-        // @formatter:off
         rest("/customer").description("Hello REST service")
-                .consumes("application/json")
-                .produces("application/json")
                 .put().type(Customer.class)
-                .to("direct:update-customer");
+                    .consumes("application/json")
+                    .produces("application/json")
+                    .to("direct:update-customer")
+                .get().type(Customer.class)
+                    .to("direct:get-customer");
 
         from("direct:update-customer")
                 .routeId("direct-update-customer")
@@ -30,7 +31,12 @@ public class CustomerRoute extends RouteBuilder {
                             exchange.getIn().setHeader("id", exchange.getIn().getHeader("id"));
                      }})
                 .to("sql:UPDATE customers SET first_name=:#${body.first_name}, email=:#${body.email} WHERE id=:#${body.id}")
+                .log("Updated the Database for the customer table .")
                 .transform().constant("Hello World1");
+
+        from("direct:get-customer")
+                .log("Requesting customer details list")
+                .to("sql:SELECT * FROM customers");
 
     }
 }

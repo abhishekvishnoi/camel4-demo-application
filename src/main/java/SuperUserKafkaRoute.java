@@ -14,7 +14,7 @@ public class SuperUserKafkaRoute extends RouteBuilder {
     @Override
     public void configure() throws Exception {
 
-        from("timer://foo?fixedRate=true&period=60000")
+        from("timer://foo?fixedRate=true&period=600000")
                 .process(new Processor() {
                     @Override
                     public void process(Exchange exchange) throws Exception {
