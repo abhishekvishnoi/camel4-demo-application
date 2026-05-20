@@ -10,6 +10,7 @@ public class CustomerStreamRoute extends RouteBuilder {
                 .log("recieved the message from customer CDC stream ${body} ")
                 .setBody(jsonpath("$.payload.after.first_name"))
                 .to("kafka:{{customer-firstname-topic}}?brokers={{broker}}")
+                .to("amqp:queue:cdcaddress::customer_firstname")
                 .log("message sent to the topic");
 
     }
