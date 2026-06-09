@@ -10,31 +10,25 @@ import java.net.UnknownHostException;
 @ApplicationScoped
 public class SuperUserKafkaRoute extends RouteBuilder {
 
-
-
     @Override
     public void configure() throws Exception {
 
-       // AMQPComponent authorizedAmqp =
-         //       AMQPComponent.amqpComponent("amqp://ex-aao-amqp-0-svc.artemis.svc.cluster.local:5762", "VUdSWL8u", "FsimPzVG");
-
-
-        from("timer://foo?fixedRate=true&period=600000")
+        from("timer://foo?fixedRate=true&period=6000")
+                .routeId("timerRoute")
                 .process(new Processor() {
                     @Override
                     public void process(Exchange exchange) throws Exception {
                         try {
                             String hostname = InetAddress.getLocalHost().getHostName();
                             System.out.println("Machine Name: " + hostname);
+
                         } catch (UnknownHostException e) {
                             e.printStackTrace();
                         }
                     }
                 })
-
                 .to("direct:hello-kafka")
                 .to("direct:hello-artemis");
-
 
         from("direct:hello-artemis")
                 .routeId("ArtemisGreetingRoute")
@@ -42,7 +36,6 @@ public class SuperUserKafkaRoute extends RouteBuilder {
                 .setBody(simple("hello artemis!!"))
                 .to("amqp:queue:myaddress::myqueue")
                 .log("message sent to the artemis queue");
-
 
         from("direct:hello-kafka")
                 .routeId("KafkaGreetingRoute")
@@ -59,9 +52,5 @@ public class SuperUserKafkaRoute extends RouteBuilder {
                 .log("    with the offset ${headers[kafka.OFFSET]}")
                 .log("    with the key ${headers[kafka.KEY]}");
 
-
     }
-
-
-
 }
