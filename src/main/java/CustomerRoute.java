@@ -15,6 +15,9 @@ public class CustomerRoute extends RouteBuilder {
                 .component("platform-http")
                 .bindingMode(RestBindingMode.json);
 
+        /**
+         * A Rest DSL to receive requests from HTTP Rest Endpoints.
+         */
         rest("/customer").description("Hello REST service")
                 .put().type(Customer.class)
                     .consumes("application/json")
@@ -23,6 +26,11 @@ public class CustomerRoute extends RouteBuilder {
                 .get().type(Customer.class)
                     .to("direct:get-customer");
 
+
+        /**
+         *  Camel Route to Update the Database for the Customer Update Request .
+         *  The Changes in the DB are then picked up by Debezium.
+         */
         from("direct:update-customer")
                 .routeId("direct-update-customer")
                 .process(new Processor()
@@ -34,6 +42,9 @@ public class CustomerRoute extends RouteBuilder {
                 .log("Updated the Database for the customer table .")
                 .transform().constant("Hello World1");
 
+        /**
+         * Camel Route to fetch user details from the customer table in the database.
+         */
         from("direct:get-customer")
                 .log("Requesting customer details list")
                 .to("sql:SELECT * FROM customers");

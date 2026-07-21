@@ -7,7 +7,7 @@ import org.apache.camel.component.amqp.AMQPComponent;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
-@ApplicationScoped
+//@ApplicationScoped
 public class SuperUserKafkaRoute extends RouteBuilder {
 
     @Override
