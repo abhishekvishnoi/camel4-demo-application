@@ -6,7 +6,7 @@ import org.apache.camel.builder.RouteBuilder;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
-@ApplicationScoped
+//@ApplicationScoped
 public class SampleExceptionRoute extends RouteBuilder {
 
     @Override
