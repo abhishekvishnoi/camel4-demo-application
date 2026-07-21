@@ -38,7 +38,7 @@ public class CustomerRoute extends RouteBuilder {
                     {@Override public void process(Exchange exchange)throws Exception {
                             exchange.getIn().setHeader("id", exchange.getIn().getHeader("id"));
                      }})
-                .to("sql:UPDATE customers SET first_name=:#${body.first_name}, email=:#${body.email} WHERE id=:#${body.id}")
+                .to("sql:UPDATE customers SET first_name=:#${body.first_name}, last_name=:#${body.last_name}, email=:#${body.email} WHERE id=:#${body.id}")
                 .log("Updated the Database for the customer table .")
                 .transform().constant("Hello World1");
 
