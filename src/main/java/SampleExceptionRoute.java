@@ -33,7 +33,7 @@ public class SampleExceptionRoute extends RouteBuilder {
                 })
                 .to("direct:hello-camel");
 
-        from("direct:hello-kafka")
+        from("direct:hello-kafka1")
                 .routeId("CamelExceptionRoute-1")
                 .log("hello camel")
                 .setBody(simple("hello kafka!!"))
